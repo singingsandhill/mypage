@@ -46,12 +46,9 @@
             background-size: cover;
             background-position: center;
         }
-        .container {
-            position: relative;
-            display: inline-block;
-        }
 
         .image {
+            opacity: 0.5; /* 50% transparency */
             display: block;
         }
 
@@ -62,10 +59,15 @@
             transform: translate(-50%, -50%);
             color: white;
             font-size: 24px;
-            background-color: rgba(0, 0, 0, 0.1); /* 10% opacity */
-            padding: 10px;
-            border-radius: 5px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000000;
         }
+        .container {
+            position: relative;
+            width: fit-content;
+            margin: auto;
+        }
+
     </style>
     <link rel="stylesheet" type="text/css" href="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/sparta-bucket2.css">
 </head>
