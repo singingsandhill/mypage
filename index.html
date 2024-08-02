@@ -1,113 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>B반 다트 대결</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Song+Myung&display=swap");
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서수호 채권 발행 내역</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Song+Myung&display=swap');
+            * {
+                font-family: "Song Myung", serif;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        * {
-            font-family: 'Song Myung', serif;
-        }
+            body {
+                background-color: #f0f0f0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
 
-        .title {
-            color: white;
-            background-color: tomato;
-            font-size: 24px;
-            padding: 4px 14px;
-            border-radius: 8px;
-        }
+            .title {
+                color: white;
+                background-color: tomato;
+                font-size: 24px;
+                padding: 4px 14px;
+                border-radius: 8px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
 
-        .bg {
-            width: 360px;
-            background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bg-grid.png");
-        }
+            .bg {
+                /* width: 360px; */
+                background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bg-grid.png");
+            }
 
-        .msg {
-            font-weight: bold;
-        }
+            .msg {
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 20px;
+            }
 
-        .bucket {
-            width: 160px;
-            height: 160px;
-        }
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                gap: 20px;
+                text-align: center;
+                margin-bottom: 40px;
+            }
 
-        .img1 {
-            background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bucket-red.png");
-            background-size: cover;
-            background-position: center;
-        }
+            .team {
+                position: relative;
+                width: 160px;
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
-        .img2 {
-            background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bucket-lightred.png");
-            background-size: cover;
-            background-position: center;
-        }
+            .image-group {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
 
-        .image {
-            opacity: 0.5; /* 50% transparency */
-            width: 160px;
-            height: 160px;
-        }
+            .image {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                opacity: 0.8; /* 80% transparency */
+                object-fit: cover;
+            }
 
-        .text-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px #000000;
-        }
-        .container {
-            position: relative;
-            width: fit-content;
-            margin: auto;
-        }
-        .rounding {
-            border-radius: 50%;
-        }
+            .text-overlay {
+                position: absolute;
+                top: 80px; /* Position text below the image */
+                text-align: center;
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px #000000;
+            }
 
-    </style>
-    <link rel="stylesheet" type="text/css" href="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/sparta-bucket2.css">
-</head>
+            .podium-1st {
+                background-color: gold;
+                width: 160px;
+                height: 100px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px 10px 0 0;
+            }
 
-<body class="bg center">
-    <h1 class="title">서수호 채권 발행 내역</h1>
-    <p class="msg"> 커피 사줘야 하는 사람</p>
-    <div class="row flex-row wrap container">
-        <div class="bucket center">
-                <img src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512" alt="" class="image" />
-                <div class="text-overlay">젤라 3잔</div>
+            .podium-2nd {
+                background-color: silver;
+                width: 160px;
+                height: 80px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .podium-3rd {
+                background-color: #cd7f32; /* Bronze color */
+                width: 160px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px 10px 0 0;
+            }
+        </style>
+    </head>
+
+    <body class="bg">
+        <div>
+            <h1 class="title">B반 다트 대결 결과</h1>
+            <div>
+                <p class="msg">8월 2일 점심 다트🎯</p>
+                <div class="container">
+                    <div class="team podium-2nd">
+                        <div class="image-group">
+                            <img
+                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512"
+                                alt=""
+                                class="image"
+                            />
+                            <img
+                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
+                                alt=""
+                                class="image"
+                            />
+                        </div>
+                        <div class="text-overlay">
+                            <p>현진 & 젤라</p>
+                            <p>2등</p>
+                        </div>
+                    </div>
+                    <div class="team podium-1st">
+                        <div class="image-group">
+                            <img
+                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071THVM6SK-1246cc1e49f4-512"
+                                alt="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
+                                class="image"
+                            />
+                            <img src="" alt="" class="image" />
+                        </div>
+                        <div class="text-overlay">
+                            <p>연수 & 지수</p>
+                            <p>1등!</p>
+                        </div>
+                    </div>
+                    <div class="team podium-3rd">
+                        <div class="image-group">
+                            <img
+                                src="https://ca.slack-edge.com/T070KNAQF5Y-U072639E4E4-5ecd2a2ee86d-512"
+                                alt=""
+                                class="image"
+                            />
+                            <img
+                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
+                                alt=""
+                                class="image"
+                            />
+                        </div>
+                        <div class="text-overlay">
+                            <p>수호 & 도윤</p>
+                            <p>3등</p>
+                        </div>
+                    </div>
+                </div>
+                <h3 style="text-align: center">커피 내기~</h3>
+            </div>
+
+            <br /><br /><br />
+            <div>
+                <p class="msg">8월 x일 다트🎯</p>
+                <div class="container">
+                    <div class="team podium-2nd">
+                        <div class="image-group">
+                            <!-- <img src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512" alt="" class="image" />-->
+                        </div>
+                        <div class="text-overlay">
+                            <p>2등</p>
+                        </div>
+                    </div>
+                    <div class="team podium-1st">
+                        <div class="image-group">
+                            <!-- <img src="https://ca.slack-edge.com/T070KNAQF5Y-U071THVM6SK-1246cc1e49f4-512" alt="" class="image" />-->
+                        </div>
+                        <div class="text-overlay">
+                            <p>1등!</p>
+                        </div>
+                    </div>
+                    <div class="team podium-3rd">
+                        <div class="image-group">
+                            <!-- <img src="https://ca.slack-edge.com/T070KNAQF5Y-U072639E4E4-5ecd2a2ee86d-512" alt="" class="image" /> -->
+                        </div>
+                        <div class="text-overlay">
+                            <p>3등</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="bucket center ">
-                <img src="./onedu.jpg" alt="" class="image rounding" />
-                <div class="text-overlay">다예 1잔</div>
-        </div>
-        <div class="bucket img4-t4 center">지수 3잔</div>
-
-        <div class="bucket center">
-                <img src="https://ca.slack-edge.com/T070KNAQF5Y-U071THVM6SK-1246cc1e49f4-512" alt="" class="image rounding" />
-                <div class="text-overlay">연수 0잔</div>
-        </div>
-        <div class="bucket center">
-                <img src="https://ca.slack-edge.com/T070KNAQF5Y-U072639E4E4-5ecd2a2ee86d-512" alt="" class="image" />
-                <div class="text-overlay">도윤 같은 팀이니까 사주세요</div>
-        </div>
-
-        <div class="bucket center">
-                <img src="https://ca.slack-edge.com/T070KNAQF5Y-U072M0P5Q8Z-3a0b5cb4a05b-512" alt="" class="image" />
-                <div class="text-overlay">동희 카페라떼 1잔 먹고싶습니다~</div>
-        </div>
-        
-<!--         <div class="bucket img3-t5 center"></div> -->
-        <img src="">
-    </div>
-
-</body>
-
+    </body>
 </html>
