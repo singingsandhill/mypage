@@ -1,413 +1,587 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>B반 다트 대결</title>
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Song+Myung&display=swap");
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12월 일정 투표</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-            * {
-                font-family: "Song Myung", serif;
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-            body {
-                background-color: #f0f0f0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
 
-            .title {
-                color: white;
-                background-color: tomato;
-                font-size: 24px;
-                padding: 4px 14px;
-                border-radius: 8px;
-                text-align: center;
-                margin-bottom: 20px;
-            }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
 
-            .bg {
-                /* width: 360px; */
-                background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bg-grid.png");
-            }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
 
-            .msg {
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
-            }
+    .select-section {
+      margin-bottom: 25px;
+    }
 
-            .container {
-                display: flex;
-                justify-content: center;
-                align-items: flex-end;
-                gap: 20px;
-                text-align: center;
-                margin-bottom: 40px;
-            }
+    .select-section label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
 
-            .team {
-                position: relative;
-                width: 160px;
-                height: 200px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
 
-            .image-group {
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-            }
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
 
-            .image {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                opacity: 0.8; /* 80% transparency */
-                object-fit: cover;
-            }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
 
-            .text-overlay {
-                position: absolute;
-                top: 80px; /* Position text below the image */
-                text-align: center;
-                color: rgb(238, 219, 219);
-                font-size: 18px;
-                font-weight: bold;
-                text-shadow: 2px 2px 4px #000000;
-            }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+    }
 
-            .podium-1st {
-                background-color: gold;
-                width: 160px;
-                height: 100px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 10px 10px 0 0;
-            }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
 
-            .podium-2nd {
-                background-color: silver;
-                width: 160px;
-                height: 80px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 10px 10px 0 0;
-            }
+    .calendar {
+      margin-bottom: 25px;
+    }
 
-            .podium-3rd {
-                background-color: #cd7f32; /* Bronze color */
-                width: 160px;
-                height: 60px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 10px 10px 0 0;
-            }
-        </style>
-    </head>
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-bottom: 10px;
+    }
 
-    <body class="bg">
-        <div>
-            <h1 class="title">B반 다트 대결 결과</h1>
-            <div>
-                <p class="msg">8월 2일 점심 다트🎯</p>
-                <div class="container">
-                    <div class="team podium-2nd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>현진 & 젤라</p>
-                            <p>2등</p>
-                        </div>
-                    </div>
-                    <div class="team podium-1st">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071THVM6SK-1246cc1e49f4-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>연수 & 지수</p>
-                            <p>1등!</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U072639E4E4-5ecd2a2ee86d-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
-                                alt="./images/suho.jpg"
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>수호 & 도윤</p>
-                            <p>3등</p>
-                        </div>
-                    </div>
-                </div>
-                <!--                 <h3 style="text-align: center">커피 내기~</h3> -->
-            </div>
+    .calendar-header span {
+      text-align: center;
+      font-weight: 600;
+      color: #666;
+      font-size: 0.85rem;
+      padding: 8px 0;
+    }
 
-            <br /><br /><br />
-            <div>
-                <p class="msg">8월 5일 점심다트🎯</p>
-                <div class="container">
-                    <div class="team podium-2nd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>2등</p>
-                            <p>지수</p>
-                        </div>
-                    </div>
-                    <div class="team podium-1st">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>1등!</p>
-                            <p>현진</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>3등</p>
-                            <p>젤라</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>4등</p>
-                            <p>수호</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br /><br /><br />
-            <div>
-                <p class="msg">8월 6일 점심다트🎯</p>
-                <div class="container">
-                    <div class="team podium-2nd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>현진 & 지수</p>
-                            <p>2등</p>
-                        </div>
-                    </div>
-                    <div class="team podium-1st">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071THVM6SK-1246cc1e49f4-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>연수 & 수호</p>
-                            <p>1등!</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512"
-                                alt=""
-                                class="image"
-                            />
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U072639E4E4-5ecd2a2ee86d-512"
-                                alt="./images/suho.jpg"
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>젤라 & 도윤</p>
-                            <p>3등</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br /><br /><br />
-            <div>
-                <p class="msg">8월 6일 쉬는 시간 다트🎯</p>
-                <div class="container">
-                    <div class="team podium-2nd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>2등</p>
-                            <p>현진</p>
-                        </div>
-                    </div>
-                    <div class="team podium-1st">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>1등!</p>
-                            <p>수호</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>3등</p>
-                            <p>지수</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br /><br /><br />
-            <div>
-                <p class="msg">8월 6일 퇴근 다트🎯</p>
-                <div class="container">
-                    <div class="team podium-2nd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071WK46DKQ-cffb39e44d8a-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>2등</p>
-                            <p>현진</p>
-                        </div>
-                    </div>
-                    <div class="team podium-1st">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071D673J2H-e6f9739fd5d2-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>1등!</p>
-                            <p>수호</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071FTSP3FV-b5a3c1ac8cb1-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>3등</p>
-                            <p>지수</p>
-                        </div>
-                    </div>
-                    <div class="team podium-3rd">
-                        <div class="image-group">
-                            <img
-                                src="https://ca.slack-edge.com/T070KNAQF5Y-U071G7LEPSN-047773300ca5-512"
-                                alt=""
-                                class="image"
-                            />
-                        </div>
-                        <div class="text-overlay">
-                            <p>4등</p>
-                            <p>젤라</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
+    .calendar-header span:first-child {
+      color: #e74c3c;
+    }
+
+    .calendar-header span:last-child {
+      color: #3498db;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      background: white;
+    }
+
+    .day:hover:not(.empty):not(.past) {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+
+    .day.empty {
+      border: none;
+      cursor: default;
+    }
+
+    .day.past {
+      background: #f5f5f5;
+      color: #bbb;
+      cursor: not-allowed;
+    }
+
+    .day.selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    .day-number {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .day:nth-child(7n+1) .day-number {
+      color: #e74c3c;
+    }
+
+    .day:nth-child(7n) .day-number {
+      color: #3498db;
+    }
+
+    .day.selected .day-number {
+      color: white;
+    }
+
+    .day.past .day-number {
+      color: #bbb !important;
+    }
+
+    .votes-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 4px;
+      justify-content: center;
+    }
+
+    .vote-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #666;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status.loading {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .config-notice {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: #856404;
+    }
+
+    .config-notice code {
+      background: rgba(0,0,0,0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📅 12월 일정 투표</h1>
+    <p class="subtitle">2025년 12월 - 가능한 날짜를 선택하세요</p>
+
+    <div class="config-notice" id="configNotice">
+      ⚠️ Supabase 설정이 필요합니다.<br>
+      아래 코드에서 <code>SUPABASE_URL</code>과 <code>SUPABASE_KEY</code>를 입력하세요.
+    </div>
+
+    <div class="select-section">
+      <label for="personSelect">👤 이름 선택</label>
+      <select id="personSelect">
+        <option value="">-- 이름을 선택하세요 --</option>
+        <option value="철수">철수</option>
+        <option value="영희">영희</option>
+        <option value="민수">민수</option>
+        <option value="지현">지현</option>
+        <option value="동욱">동욱</option>
+      </select>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #e74c3c;"></div>
+        <span>철수</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #3498db;"></div>
+        <span>영희</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #2ecc71;"></div>
+        <span>민수</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #f39c12;"></div>
+        <span>지현</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #9b59b6;"></div>
+        <span>동욱</span>
+      </div>
+    </div>
+
+    <div class="calendar">
+      <div class="calendar-header">
+        <span>일</span>
+        <span>월</span>
+        <span>화</span>
+        <span>수</span>
+        <span>목</span>
+        <span>금</span>
+        <span>토</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="btn-container">
+      <button class="btn btn-secondary" id="resetBtn">초기화</button>
+      <button class="btn btn-primary" id="saveBtn" disabled>저장하기</button>
+    </div>
+
+    <div class="status" id="status" style="display: none;"></div>
+  </div>
+
+  <script>
+    // ============================================
+    // 🔧 여기에 Supabase 설정을 입력하세요!
+    // ============================================
+    const SUPABASE_URL = 'https://xxtebninrfqaptushbvl.supabase.co';      // 예: https://xxxxx.supabase.co
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4dGVibmlucmZxYXB0dXNoYnZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NjA3MTMsImV4cCI6MjA4MDMzNjcxM30.31O2XSAknqlSWjkTOG4cxVnJ4K9MXS8GGDgIMjzfqdo'; // 예: eyJhbGciOiJIUzI1NiIs...
+    // ============================================
+
+    // 사람별 색상
+    const COLORS = {
+      '철수': '#e74c3c',
+      '영희': '#3498db',
+      '민수': '#2ecc71',
+      '지현': '#f39c12',
+      '동욱': '#9b59b6'
+    };
+
+    // 상태
+    let supabase = null;
+    let selectedDates = [];
+    let allVotes = {};
+    let currentPerson = '';
+
+    // DOM 요소
+    const personSelect = document.getElementById('personSelect');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const saveBtn = document.getElementById('saveBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+    const configNotice = document.getElementById('configNotice');
+
+    // 초기화
+    function init() {
+      if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        configNotice.style.display = 'none';
+        loadAllVotes();
+      }
+      renderCalendar();
+      
+      personSelect.addEventListener('change', onPersonChange);
+      saveBtn.addEventListener('click', saveVotes);
+      resetBtn.addEventListener('click', resetSelection);
+    }
+
+    // 달력 렌더링
+    function renderCalendar() {
+      calendarGrid.innerHTML = '';
+      
+      // 2025년 12월 1일은 월요일 (시작 요일: 1)
+      const firstDay = 1; // 0=일, 1=월, ...
+      const daysInMonth = 31;
+      const today = new Date();
+      const currentDay = today.getFullYear() === 2025 && today.getMonth() === 11 ? today.getDate() : 0;
+
+      // 빈 칸 채우기
+      for (let i = 0; i < firstDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'day empty';
+        calendarGrid.appendChild(emptyDay);
+      }
+
+      // 날짜 채우기
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'day';
+        dayEl.dataset.day = day;
+
+        if (day < currentDay) {
+          dayEl.classList.add('past');
+        }
+
+        // 날짜 숫자
+        const dayNumber = document.createElement('span');
+        dayNumber.className = 'day-number';
+        dayNumber.textContent = day;
+        dayEl.appendChild(dayNumber);
+
+        // 투표 표시 컨테이너
+        const votesContainer = document.createElement('div');
+        votesContainer.className = 'votes-container';
+        dayEl.appendChild(votesContainer);
+
+        // 선택된 날짜 표시
+        if (selectedDates.includes(day)) {
+          dayEl.classList.add('selected');
+        }
+
+        // 클릭 이벤트
+        if (day >= currentDay && currentPerson) {
+          dayEl.addEventListener('click', () => toggleDate(day));
+        }
+
+        calendarGrid.appendChild(dayEl);
+      }
+
+      updateVoteDots();
+    }
+
+    // 투표 점 업데이트
+    function updateVoteDots() {
+      document.querySelectorAll('.day:not(.empty)').forEach(dayEl => {
+        const day = parseInt(dayEl.dataset.day);
+        const votesContainer = dayEl.querySelector('.votes-container');
+        votesContainer.innerHTML = '';
+
+        Object.entries(allVotes).forEach(([person, dates]) => {
+          if (dates.includes(day) && person !== currentPerson) {
+            const dot = document.createElement('div');
+            dot.className = 'vote-dot';
+            dot.style.background = COLORS[person];
+            dot.title = person;
+            votesContainer.appendChild(dot);
+          }
+        });
+      });
+    }
+
+    // 날짜 토글
+    function toggleDate(day) {
+      if (!currentPerson) return;
+
+      const index = selectedDates.indexOf(day);
+      if (index > -1) {
+        selectedDates.splice(index, 1);
+      } else {
+        selectedDates.push(day);
+      }
+      selectedDates.sort((a, b) => a - b);
+      
+      renderCalendar();
+      saveBtn.disabled = false;
+    }
+
+    // 사람 변경
+    async function onPersonChange() {
+      currentPerson = personSelect.value;
+      selectedDates = [];
+      
+      if (currentPerson && supabase) {
+        showStatus('loading', '데이터 불러오는 중...');
+        try {
+          const { data, error } = await supabase
+            .from('votes')
+            .select('selected_dates')
+            .eq('person_name', currentPerson)
+            .single();
+
+          if (error) throw error;
+          
+          selectedDates = data?.selected_dates || [];
+          showStatus('success', `${currentPerson}님의 데이터를 불러왔습니다.`);
+          setTimeout(() => hideStatus(), 2000);
+        } catch (err) {
+          console.error(err);
+          showStatus('error', '데이터 로드 실패');
+        }
+      }
+
+      saveBtn.disabled = !currentPerson;
+      renderCalendar();
+    }
+
+    // 모든 투표 로드
+    async function loadAllVotes() {
+      if (!supabase) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('votes')
+          .select('person_name, selected_dates');
+
+        if (error) throw error;
+
+        allVotes = {};
+        data.forEach(row => {
+          allVotes[row.person_name] = row.selected_dates || [];
+        });
+
+        updateVoteDots();
+      } catch (err) {
+        console.error('투표 로드 실패:', err);
+      }
+    }
+
+    // 저장
+    async function saveVotes() {
+      if (!currentPerson || !supabase) return;
+
+      showStatus('loading', '저장 중...');
+      saveBtn.disabled = true;
+
+      try {
+        const { error } = await supabase
+          .from('votes')
+          .update({ 
+            selected_dates: selectedDates,
+            updated_at: new Date().toISOString()
+          })
+          .eq('person_name', currentPerson);
+
+        if (error) throw error;
+
+        allVotes[currentPerson] = [...selectedDates];
+        showStatus('success', '저장되었습니다! ✓');
+        updateVoteDots();
+        
+        setTimeout(() => hideStatus(), 2000);
+      } catch (err) {
+        console.error(err);
+        showStatus('error', '저장 실패: ' + err.message);
+      }
+
+      saveBtn.disabled = false;
+    }
+
+    // 초기화
+    function resetSelection() {
+      selectedDates = [];
+      renderCalendar();
+      if (currentPerson) {
+        saveBtn.disabled = false;
+      }
+    }
+
+    // 상태 표시
+    function showStatus(type, message) {
+      status.className = 'status ' + type;
+      status.textContent = message;
+      status.style.display = 'block';
+    }
+
+    function hideStatus() {
+      status.style.display = 'none';
+    }
+
+    // 시작
+    init();
+  </script>
+</body>
 </html>
